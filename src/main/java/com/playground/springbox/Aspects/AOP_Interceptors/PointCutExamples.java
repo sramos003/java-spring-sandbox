@@ -1,4 +1,4 @@
-package com.playground.springbox.Aspects.Interceptors;
+package com.playground.springbox.Aspects.AOP_Interceptors;
 
 import com.playground.springbox.Constants.AppConstants;
 import lombok.extern.slf4j.Slf4j;
@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings(AppConstants.UNUSED)
 @Component
 @Aspect
-public class PointCutListener {
+public class PointCutExamples {
     /**
      * Reference: https://www.baeldung.com/spring-aop-pointcut-tutorial
      * Syntax   : execution(CLASS_MODIFIER CLASS_PATH.CLASS_NAME.METHOD(TYPE)* supports '*' wild-card parameters,
      * Example  : execution(* com.foo.bar.Bar.method(Long))
      */
-    public PointCutListener() { }
+    public PointCutExamples() { }
 
     // The PCD can be described as a standalone method to bind different Advices around it
     @Pointcut("execution(* com.playground.springbox.Controller.TestController.healthCheck(..))")

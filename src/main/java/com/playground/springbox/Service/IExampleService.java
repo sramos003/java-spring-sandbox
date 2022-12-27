@@ -7,5 +7,7 @@ public interface IExampleService {
     
     void exampleVoid();
     
+    Integer exampleFib(int nthElement);
+    
     void exampleException() throws Exception;
 }
