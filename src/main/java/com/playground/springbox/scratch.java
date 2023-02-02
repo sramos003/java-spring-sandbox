@@ -1,36 +1,31 @@
-
 import java.text.DecimalFormat;
 
 class Scratch {
     static class DigitCounter {
-        // Return decimal formatted number initialized with starting/ending 0s 
-        private final DecimalFormat decimalFormat = new DecimalFormat("00000.00000");
-        
-        private int getConvertedNum(String string) {
-            var index = string.indexOf(".");
-            return index == -1 ? string.length() : index;
-        }
-        
-        private int counter(Object value) {
-            boolean isDecimalInstance = (value instanceof Double || value instanceof Float);
-            boolean isStringInstance = (value instanceof String);
-            // If Object is of Double or Float return decimal formatted number
-            if (isDecimalInstance) {
-                return getConvertedNum(decimalFormat.format(value));
+        public static void evaluateNumber(Object numToTest, int numberEquals) {
+            // Return decimal formatted number initialized with starting/ending 0s
+            DecimalFormat decimalFormat = new DecimalFormat("00000.00000");
+            String messageToDisplay;
+            String numberToPrint;
+            if (numToTest instanceof Double || numToTest instanceof Float) {
+                messageToDisplay = (numToTest instanceof Double ? "double" : "float") + " number test ";
+                numberToPrint = decimalFormat.format(numberEquals);
+            } else if (numToTest instanceof String) {
+                messageToDisplay = "string number test ";
+                numberToPrint = decimalFormat.format(Double.parseDouble((String) numToTest));
+            } else {
+                messageToDisplay = "integer number test ";
+                numberToPrint = String.valueOf(numToTest);
             }
-            // If Object is of String return decimal formatted number
-            if (isStringInstance) {
-                return getConvertedNum(decimalFormat.format(Double.parseDouble((String) value)));
-            }
-            // If Object is of anything else besides Double or Float or String, convert to string.
-            return getConvertedNum(String.valueOf(value));
-        }
-
-        public static void evaluateNumber(String messageToDisplay, Object numToTest, int numberEquals) {
-            var digitCounter = new DigitCounter();
-            System.out.printf(messageToDisplay + (digitCounter.counter(numToTest) == numberEquals ? " PASS " : " FAIL ") + "\n-//-\n");
+            var index = numberToPrint.indexOf(".");
+            var convertedNumber = index == -1 ? numberToPrint.length() : index;
+            // Digit counter must return the numbers of digits left of the decimal
+            // Digit counter must return the numbers of digits right of the decimal   
+            String pass_or_fail = (convertedNumber == numberEquals ? " PASS " : " FAIL ");
+            System.out.printf(messageToDisplay + " number: " + numberToPrint + " : " + pass_or_fail + " \n --- \n");
         }
     }
+
     public static void main(String[] args) {
         double digitDouble = 001234.22000d;
         double decimalDouble = 123.4500d;
@@ -41,15 +36,13 @@ class Scratch {
         // ---
         int three = 3;
         int five = 5;
-        // Digit counter must return the numbers of digits left of the decimal
-        DigitCounter.evaluateNumber("Double digit test 001234.22000: ", digitDouble, five);
-        DigitCounter.evaluateNumber("Float digit test 00123.4500 ", digitFloat, five);
-        DigitCounter.evaluateNumber("Int digit test 123: ", number, three);
-        DigitCounter.evaluateNumber("String digit test: 123.4500: ", string, five);
-        // Decimal counter must return the numbers of digits right of the decimal
-        DigitCounter.evaluateNumber("Double decimal test 00123.4500", decimalDouble, five);
-        DigitCounter.evaluateNumber("Float decimal test 00123.4500", decimalFloat, five);
-        DigitCounter.evaluateNumber("Int decimal test 123: ", number, three);
-        DigitCounter.evaluateNumber("String decimal test 123.4500", string, five);
+        DigitCounter.evaluateNumber(digitDouble, five);
+        DigitCounter.evaluateNumber(digitFloat, five);
+        DigitCounter.evaluateNumber(number, three);
+        DigitCounter.evaluateNumber(string, five);
+        DigitCounter.evaluateNumber(decimalDouble, five);
+        DigitCounter.evaluateNumber(decimalFloat, five);
+        DigitCounter.evaluateNumber(number, three);
+        DigitCounter.evaluateNumber(string, five);
     }
 }
