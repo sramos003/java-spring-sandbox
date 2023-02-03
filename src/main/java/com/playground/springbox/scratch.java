@@ -7,27 +7,42 @@ class Scratch {
         enum CounterTypes {
             DecimalCounter, DigitCounter
         }
+        // Determine current instance of Object method,
+        // this is the same as overloading the methods signatures,
+        // you just use the base Object type and check for the type instance you need
         public static void evaluateNumber(Object numToTest, int numberEquals, CounterTypes counterTypes) {
             // Return decimal formatted number initialized with starting/ending 0s
             DecimalFormat decimalFormat = new DecimalFormat("00000.00000");
+            // boolean t/f checks.
+            boolean isDecimalInstance = (numToTest instanceof Double || numToTest instanceof Float);
+            boolean isStringInstance = (numToTest instanceof String);
             String messageToDisplay;
             String numberToPrint;
             String subMessage = CounterTypes.DigitCounter.equals(counterTypes) ? "digit" : "decimal";
-            if (numToTest instanceof Double || numToTest instanceof Float) {
+            int counterTypeLength;
+            // Check current instance.
+            if (isDecimalInstance) {
                 messageToDisplay = String.format("%s %s number test", (numToTest instanceof Double ? "double" : "float"), subMessage);
                 numberToPrint = decimalFormat.format(numToTest);
-            } else if (numToTest instanceof String) {
+            } else if (isStringInstance) {
                 messageToDisplay = String.format("string %s number test ", subMessage);
                 numberToPrint = decimalFormat.format(Double.parseDouble((String) numToTest));
             } else {
                 messageToDisplay = String.format("integer %s number test ", subMessage);
                 numberToPrint = String.valueOf(numToTest);
             }
-            var index = numberToPrint.indexOf(".");
-            var convertedNumber = index == -1 ? numberToPrint.length() : index;
-            // Digit counter must return the numbers of digits left of the decimal
-            // Digit counter must return the numbers of digits right of the decimal   
-            String pass_or_fail = (convertedNumber == numberEquals ? " PASS " : " FAIL ");
+            // Determine comparison to make for digits or decimals or L or R of decimal point.
+            if (isDecimalInstance || isStringInstance) {
+                var splitStringLeft = numberToPrint.substring(0, numberToPrint.indexOf("."));
+                var splitStringRight = numberToPrint.substring(numberToPrint.indexOf("."));
+                // Digit counter must return the numbers of digits left of the decimal
+                // Digit counter must return the numbers of digits right of the decimal
+                counterTypeLength = counterTypes.equals(CounterTypes.DigitCounter) ? splitStringLeft.length() : splitStringRight.length();
+            } else {
+                // No decimal points provided, return the length of the string.
+                counterTypeLength = numberToPrint.length();
+            }
+            String pass_or_fail = (counterTypeLength == numberEquals ? " PASS " : " FAIL ");
             System.out.printf(messageToDisplay + " number: " + numberToPrint + " : " + pass_or_fail + " \n --- \n");
         }
     }
